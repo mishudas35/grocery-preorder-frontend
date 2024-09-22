@@ -29,7 +29,7 @@
         </select>
       </div>
 
-      <div class="g-recaptcha" data-sitekey="6Lf1sksqAAAAALp8HJb1A4rwNf1w6ONzlHF37Lfn" @captcha-success="onCaptchaVerified"></div>
+      <div id="recaptcha" class="g-recaptcha"></div>
 
       <!-- Submit Button -->
       <button type="submit">Submit Preorder</button>
@@ -60,16 +60,12 @@ export default {
       showPhoneField: false,  // Toggle phone field visibility
       successMessage: '',     // Success message to show after submission
       errorMessage: '',       // Error message to show if there's an issue
+      recaptchaReady: false,  // Indicate when the reCAPTCHA is ready
     };
   },
   mounted() {
     this.fetchProducts();
-    // Load the reCAPTCHA script dynamically
-    const recaptchaScript = document.createElement('script');
-    recaptchaScript.src = 'https://www.google.com/recaptcha/api.js';
-    recaptchaScript.async = true;
-    recaptchaScript.defer = true;
-    document.head.appendChild(recaptchaScript);
+    this.loadRecaptchaScript();
   },
   methods: {
     // Fetch products from the API
@@ -82,10 +78,33 @@ export default {
         this.errorMessage = 'Failed to load products';
       }
     },
-       // Handle reCAPTCHA verification
-       onCaptchaVerified() {
-        console.log("Hello");
-      this.formData.recaptchaToken = grecaptcha.getResponse();
+   // Load the reCAPTCHA script
+   loadRecaptchaScript() {
+      const recaptchaScript = document.createElement('script');
+      recaptchaScript.src = 'https://www.google.com/recaptcha/api.js?onload=recaptchaLoaded&render=explicit';
+      recaptchaScript.async = true;
+      recaptchaScript.defer = true;
+      document.head.appendChild(recaptchaScript);
+
+      // Set a global callback for when the reCAPTCHA script has loaded
+      window.recaptchaLoaded = this.renderRecaptcha;
+    },
+    // Render the reCAPTCHA widget
+    renderRecaptcha() {
+      if (typeof grecaptcha !== 'undefined') {
+        grecaptcha.render('recaptcha', {
+          sitekey: process.env.VUE_APP_RECAPTCHA_SITE_KEY, // Replace with your reCAPTCHA site key
+          callback: this.onCaptchaVerified, // This function will be called when the reCAPTCHA is successfully completed
+        });
+        this.recaptchaReady = true;
+      } else {
+        console.error('grecaptcha is not defined');
+      }
+    },
+    // Handle reCAPTCHA verification
+    onCaptchaVerified(token) {
+      console.log('Captcha Verified:', token);
+      this.formData.recaptchaToken = token; // Store the token in formData
     },
     // Check email and toggle phone field
     checkEmail() {
