@@ -11,6 +11,8 @@
     "axios": "^1.7.7",
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
+    "vue-recaptcha": "^3.0.0-alpha.6",
+    "vue-recaptcha-v3": "^2.0.1",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
