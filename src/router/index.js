@@ -5,7 +5,7 @@ import PreOrderList from '@/components/PreOrderList.vue';
 const routes = [
   {
     path: '/',
-    redirect: '/preorder'
+    redirect: '/preorder-list'
   },
   {
     path: '/preorder',

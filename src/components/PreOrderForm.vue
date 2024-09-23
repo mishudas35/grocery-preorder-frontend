@@ -30,9 +30,17 @@
       </div>
 
       <div id="recaptcha" class="g-recaptcha"></div>
+      
+      <!-- Buttons Container -->
+      <div class="button-container">
+         <!-- Button to Redirect to Preorders List -->
+         <button type="button" @click="goToPreorderList" class="preorder-list-button">
+          Show Preorders List
+        </button>
+        <!-- Submit Button -->
+        <button type="submit" class="submit-button">Submit Preorder</button>
+      </div>
 
-      <!-- Submit Button -->
-      <button type="submit">Submit Preorder</button>
     </form>
 
     <!-- Success and Error Messages -->
@@ -131,6 +139,10 @@ export default {
         console.error('Error submitting preorder:', error);
       }
     },
+     // Redirect to preorders list
+     goToPreorderList() {
+      this.$router.push({ path: '/preorder-list' });
+    },
     // Reset form after submission
     resetForm() {
       this.formData = {
@@ -178,5 +190,40 @@ export default {
 
 .preorder-form button:hover {
   background-color: #0056b3;
+}
+
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.submit-button,
+.preorder-list-button {
+  width: 48%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit-button {
+  background-color: #00ff0d;
+  color: white;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+.preorder-list-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.preorder-list-button:hover {
+  background-color: #218838;
 }
 </style>
