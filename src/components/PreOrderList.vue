@@ -27,6 +27,7 @@
           <th @click="changeOrder('email')">Email <span :class="getOrderDirection('email')"></span></th>
           <th @click="changeOrder('product')">Product <span :class="getOrderDirection('product')"></span></th>
           <th @click="changeOrder('created_at')">Created At <span :class="getOrderDirection('created_at')"></span></th>
+          <th v-if="isAdmin">Action</th>
         </tr>
       </thead>
       <tbody>
@@ -35,6 +36,9 @@
           <td>{{ preorder.email }}</td>
           <td>{{ preorder.product.name }}</td>
           <td>{{ preorder.created_at }}</td>
+          <td>
+            <button v-if="userRole === 'admin'" @click="deletePreOrder(preorder.id)" class="delete-btn">🗑️</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -59,7 +63,13 @@ export default {
       perPage: 10,               // Number of results per page
       orderBy: "created_at",      // Default order field
       orderDirection: "desc",    // Default order direction (descending)
+      userRole: localStorage.getItem('role') || null,
     };
+  },
+  computed: {
+    isAdmin() {
+      return this.userRole === 'admin'; // Check if the user is an admin
+    },
   },
   mounted() {
     this.fetchPreOrders(); // Fetch pre-orders when component mounts
@@ -88,6 +98,17 @@ export default {
         console.error("Error fetching pre-orders:", error);
       }
     },
+    async deletePreOrder(preorderId) {
+    if (confirm("Are you sure you want to delete this pre-order?")) {
+      try {
+        await axios.delete(`${process.env.VUE_APP_API_BASE_URL}/preorder/${preorderId}`);
+        console.log("Pre-order deleted:", preorderId);
+        this.fetchPreOrders(); // Refresh the list after deletion
+      } catch (error) {
+        console.error("Error deleting pre-order:", error);
+      }
+    }
+  },
     async logout() {
     await axios.post('/api/logout');
     localStorage.removeItem('token');
