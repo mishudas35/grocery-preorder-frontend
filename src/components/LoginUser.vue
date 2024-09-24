@@ -39,8 +39,13 @@ export default {
         });
         const { token, role } = response.data;
 
+        localStorage.removeItem('token');
+
+        
         localStorage.setItem('token', token);
         localStorage.setItem('role', role);
+
+        console.log("Token stored in localStorage:", localStorage.getItem('token')); // Check the value
 
         this.$router.push({ path: '/preorder-list' });
       } catch (error) {
