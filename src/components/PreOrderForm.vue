@@ -133,6 +133,7 @@ export default {
         this.successMessage = 'Pre-order successfully submitted!';
         this.errorMessage = ''; // Clear any previous error
         this.resetForm(); // Optionally reset form after successful submission
+        this.refreshCaptcha(); // Optionally reset form after successful submission
       } catch (error) {
         this.errorMessage = 'Failed to submit pre-order. Please try again.';
         this.successMessage = ''; // Clear any previous success message
@@ -153,7 +154,14 @@ export default {
         recaptchaToken: '',
       };
       this.showPhoneField = false;
-    }
+    },
+    refreshCaptcha() {
+      // Call the CAPTCHA library function to refresh it
+      if (this.$refs.captcha) {
+        // Example for reCAPTCHA, adjust based on your CAPTCHA implementation
+        grecaptcha.reset(); // Replace with your CAPTCHA refresh function
+      }
+    },
   },
 };
 </script>
