@@ -1,5 +1,10 @@
 <template>
   <div class="preorder-list">
+       <!-- Top Bar with Logout -->
+       <div class="top-bar">
+        <button @click="logout" class="logout-btn">Logout</button>
+      </div>
+
     <!-- Create Preorder Button -->
     <button @click="goToCreatePreorder" class="create-preorder-btn">
       Create Preorder
@@ -83,6 +88,12 @@ export default {
         console.error("Error fetching pre-orders:", error);
       }
     },
+    async logout() {
+    await axios.post('/api/logout');
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    this.$router.push({ name: 'Login' });
+  },
 
     // Change the order field and direction
     changeOrder(field) {
@@ -171,5 +182,26 @@ tbody td {
 
 .pagination-controls button:disabled {
   background-color: #ccc;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  background-color: #f8f9fa;
+}
+
+.logout-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #c82333;
 }
 </style>
