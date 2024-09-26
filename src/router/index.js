@@ -6,7 +6,7 @@ import LoginUser from '@/components/LoginUser.vue';
 const routes = [
   {
     path: '/',
-    redirect: '/preorder-list'
+    redirect: '/login'
   },
   {
     path: '/preorder',
