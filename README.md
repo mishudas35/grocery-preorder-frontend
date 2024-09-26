@@ -57,8 +57,8 @@ Installation
     
 3. Add below credentials to .env
 
-VUE_APP_API_BASE_URL=http://localhost:8000
+VUE_APP_API_BASE_URL=
 
-VUE_APP_RECAPTCHA_SITE_KEY="6Lf1sksqAAAAALp8HJb1A4rwNf1w6ONzlHF37Lfn"
+VUE_APP_RECAPTCHA_SITE_KEY=
 
 4. npm run serve
